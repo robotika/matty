@@ -7,4 +7,4 @@ Conection joint encoder to esp board:
 
   white   - IO5 
 
-![Conection joint encoder - esp board](../../Images/encoder-esp.jpg)
+![Conection joint encoder - esp board](../../images/encoder-esp.jpg)
