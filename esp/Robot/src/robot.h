@@ -12,7 +12,7 @@
 #define SCAN_PERIOD       0 // perioda scanovani pro odometrii, default vypnuto
 #define dT              (CONTROL_PERIOD * 1e-3f) // perioda rizeni 0.02 s
 
-#define ZERO_JOINT  178.3f  // nulova poloha kloubu
+#define ZERO_JOINT 185.52f  // nulova poloha kloubu
 #define ANGLE_MAX       45  // maximalni uhel natoceni kloubu
 #define SPEED_MAX      700  // max rychlost [mm/s]
 #define STEER_MAX       90  // max uhlova rychlost [st./s]
