@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "as5600.h"
 
-AS5600 as5600(0);
+AS5600 as5600(185.52f);
 
 /*
   Conection joint encoder - esp board
