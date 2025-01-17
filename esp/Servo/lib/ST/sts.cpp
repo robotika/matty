@@ -60,27 +60,40 @@ uint16_t Sts::readPacket() {
     } else if (serial->peek() == -1) {
         return rxBuffer[2] = ERROR; // Return with Error if two headers are not found
     }
+
     if (serial->peek() == 0xFF && firstHeader == 0xFF) {
         serial->read();               // Clear 2nd header from RX buffer
         rxBuffer[0] = serial->read(); // ID sent from Dynamixel
         rxBuffer[1] = serial->read(); // Frame Length of status packet
+        if (rxBuffer[1] > 16) { // Podzrele velka delka dat (Error + Params + CheckSum)
+            return rxBuffer[2] = ERROR; 
+        }
         rxBuffer[2] = serial->read(); // Error byte
 
         timeCounter = STATUS_PACKET_TIMEOUT + millis();
-        while (rxBuffer[1] - 2 >= serial->available()) { // Wait for wait for "Para1 + ... Para X" received data
+        while (rxBuffer[1] - 2 >= serial->available()) { // Wait for "Para1 + ... Para X" received data
             if (millis() >= timeCounter) {
                 return rxBuffer[2] = ERROR; // Return with Error if Serial data not received with in time limit
             }
         }
+
         do {
             rxBuffer[3 + counter] = serial->read();
             counter++;
-        } while (rxBuffer[1] > counter); // Read Parameter(s) into array
+        } while (rxBuffer[1] - 2 > counter); // Read Parameter(s) into array
 
-        rxBuffer[counter + 4] = serial->read(); // Read Check sum
+        rxBuffer[3 + counter] = serial->read(); // Read Check sum
     } else {
         return rxBuffer[2] = ERROR; // Return with Error if two headers are not found
     }
+/*
+    Serial.printf("%02X : ", counter);
+    for (int i = 0; i < rxBuffer[1] + 2; i++) {
+        Serial.printf("%02X ", rxBuffer[i]);
+    }
+    Serial.println();
+*/
+    // Check sum test ???
 }
 
 void Sts::clearRxBuffer(void) {
