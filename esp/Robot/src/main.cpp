@@ -24,7 +24,7 @@ void receiveCommand() {
     if (comm.get() == PACKET_READY) {               // nacteni dat
       comm.confirm('A');
       switch (comm.rxData.command) {
-        case 'S': robot.stop();
+        case 'S': robot.stop(1);
                   break;
         case 'R': robot.reset();
                   break;

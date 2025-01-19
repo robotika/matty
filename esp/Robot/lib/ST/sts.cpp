@@ -60,27 +60,34 @@ uint16_t Sts::readPacket() {
     } else if (serial->peek() == -1) {
         return rxBuffer[2] = ERROR; // Return with Error if two headers are not found
     }
+
     if (serial->peek() == 0xFF && firstHeader == 0xFF) {
         serial->read();               // Clear 2nd header from RX buffer
         rxBuffer[0] = serial->read(); // ID sent from Dynamixel
         rxBuffer[1] = serial->read(); // Frame Length of status packet
+        if (rxBuffer[1] > 16) { // Podzrele velka delka dat (Error + Params + CheckSum)
+            return rxBuffer[2] = ERROR; 
+        }
         rxBuffer[2] = serial->read(); // Error byte
 
         timeCounter = STATUS_PACKET_TIMEOUT + millis();
-        while (rxBuffer[1] - 2 >= serial->available()) { // Wait for wait for "Para1 + ... Para X" received data
+        while (rxBuffer[1] - 2 >= serial->available()) { // Wait for "Para1 + ... Para X" received data
             if (millis() >= timeCounter) {
                 return rxBuffer[2] = ERROR; // Return with Error if Serial data not received with in time limit
             }
         }
+
         do {
             rxBuffer[3 + counter] = serial->read();
             counter++;
-        } while (rxBuffer[1] > counter); // Read Parameter(s) into array
+        } while (rxBuffer[1] - 2 > counter); // Read Parameter(s) into array
 
-        rxBuffer[counter + 4] = serial->read(); // Read Check sum
+        rxBuffer[3 + counter] = serial->read(); // Read Check sum
     } else {
         return rxBuffer[2] = ERROR; // Return with Error if two headers are not found
     }
+    // Check sum test ???
+    return 0;
 }
 
 void Sts::clearRxBuffer(void) {
@@ -169,11 +176,11 @@ int16_t Sts::bulkRead(uint8_t num, uint8_t id[], uint8_t address, uint8_t data[]
                 data[j*dataLen + i] = rxBuffer[3 + i];
             } else {
                 data[j*dataLen + i] = 0xff; // Error read
-                result = -1;
+                result -= 1;
             }
         }
     }
-    return result;
+    return result / dataLen;
 }
 
 void Sts::writePosition(uint8_t ID, int16_t position, uint16_t speed) {

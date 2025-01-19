@@ -1,4 +1,5 @@
 #include "communication.h"
+#include "robot.h"
 
 Comm::Comm(HardwareSerial* serial) : Robbus(serial) {
 } 
@@ -22,9 +23,9 @@ void Comm::send(uint8_t status, uint8_t mode, uint16_t voltage, uint16_t current
   txData.current = current;
   txData.speed = speed;
   txData.angle = round(angle * 100 );
-  txData.encoder[0] = encoder[0];
-  txData.encoder[1] = encoder[1];
-  txData.encoder[2] = encoder[2];
-  txData.encoder[3] = encoder[3];
+  txData.encoder[0] = encoder[0] * STEP;
+  txData.encoder[1] = encoder[1] * STEP;
+  txData.encoder[2] = encoder[2] * STEP;
+  txData.encoder[3] = encoder[3] * STEP;
   transmit(&txData, sizeof(TransmitPacket));
 }

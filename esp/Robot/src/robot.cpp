@@ -34,12 +34,19 @@ bool  Robot::go(float speed, float steer) {
   this->speed = speed;
   this->steer = steer;
   timeGo = millis();
+  running = 1;
   return 1;
 }
 
-void  Robot::stop() {
-  speed = 0;
-  steer = as5600.angle() / 100.0f;
+void  Robot::stop(bool off) {
+  if (!off) {
+    speed = 0;
+    steer = as5600.angle() / 100.0f;
+  } else {
+    int16_t p[SERVOS] = {0, 0, 0, 0};  
+    writeSyncSpeed(SERVOS, idServo, p);
+    running = 0;
+  }
 }
 
 void  Robot::control() {
@@ -107,13 +114,15 @@ void Robot::updateOdometry(uint32_t t) {
 }
 
 bool Robot::process() {
-  static uint32_t timeControl;   // cas posleniho rizeni
   uint32_t t = millis();
-  if ((int32_t)t - (int32_t)timeGo >= (int32_t)robotTimeout) {
-    stop();
+
+  if ((int32_t)t - (int32_t)timeGo >= (int32_t)robotTimeout) { // timeout
     timeGo = t + 36000000;
+    stop();
   }
-  if (t - timeControl >= CONTROL_PERIOD) {
+
+  static uint32_t timeControl;   // cas posledniho rizeni
+  if (running && t - timeControl >= CONTROL_PERIOD) {
     timeControl = t;
     control();
   }
@@ -141,7 +150,7 @@ void Robot::updatePower() {
   } else {
     current = (currentRaw[0] + currentRaw[1] + currentRaw[2] + currentRaw[3]) * 10.0f;
   }
-  voltage = power.getBusVoltage_V() * 1000.0F;
+  voltage = power.getBusVoltage_V() * 1000.0f;
 }
 
 void Robot::setTime(uint16_t period, uint16_t t) { // nastavi periodu pro cteni odomerie a odesilani dat, timeout pro automaticke zastaveni, pokud neprijde novy povel G
