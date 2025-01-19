@@ -50,7 +50,7 @@ void setup() {
 uint8_t idServo[SERVOS] = {4, 2, 3, 1};
 
 uint32_t timeStamp = millis();
-#define  PERIOD 1000
+#define  PERIOD 100
 
 void loop() {
   uint8_t num = 4; // pocet serv
@@ -75,6 +75,7 @@ void loop() {
     Serial.println();
 
 #if (VER == 1)
+  Serial.println(millis());
   for (int i = 0; i < num; i++) {
     readPacket(6 + datalen);
   }
