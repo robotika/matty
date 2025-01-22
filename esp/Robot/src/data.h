@@ -5,6 +5,14 @@
 
 // Robbus
 
+enum ROBOT_STATUS {
+  EMERGENCY_STOP  = 0x01,
+  VOLTAGE_LOW     = 0x02,
+  ERROR_ENCODER   = 0x10,
+  ERROR_POWER     = 0x20,
+  RUNNING         = 0x80
+};
+
 struct __attribute__((packed)) ReceivePacket {
   uint8_t counter;
   uint8_t command;
