@@ -11,6 +11,8 @@ Robot::Robot(Stream* stSerial) : Sts(stSerial) {
 void Robot::init() {
   as5600.init();
   power.init();
+  pinMode(BUMPER_FRONT_PIN, INPUT);
+  pinMode(BUMPER_BACK_PIN,  INPUT);
   stop();
   process();
   reset();
@@ -146,6 +148,8 @@ bool Robot::process() {
     } else if (voltage < VOLTAGE_LOW_LIMIT) {
       status |= VOLTAGE_LOW;
     }
+    if (digitalRead(BUMPER_FRONT_PIN) == 0) status |= BUMPER_FRONT;
+    if (digitalRead(BUMPER_BACK_PIN)  == 0) status |= BUMPER_BACK;
     timeScan = t;
     return 1;
   }
