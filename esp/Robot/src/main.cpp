@@ -2,6 +2,7 @@
 #include "data.h"
 #include "robot.h" 
 #include "communication.h"
+#include "gps.h"
 
 #define REMOTE_CONTROL  1
 #define AUTONOMOUS      2
@@ -9,7 +10,8 @@
 //EspNow espnow;
 
 Comm comm(&Serial);
-Robot robot(&ServoPort); 
+Robot robot(&SerialServo); 
+GPS gps(&SerialGPS);
 
 //EspReceiveData  receiveData  = {0, 0, 0};
 //EspTransmitData transmitData = {0, 0, 0};
@@ -30,6 +32,8 @@ void receiveCommand() {
                   break;
         case 'T': robot.setTime(comm.rxData.period, comm.rxData.timeout);
                   break;
+        case 'P': gps.config(comm.rxData.mode);
+                  break;
       }
     } else {
       comm.confirm('N');
@@ -40,8 +44,10 @@ void receiveCommand() {
 void setup() {
   comm.begin();
 
-  ServoPort.begin(1000000, SERIAL_8N1, S_RXD, S_TXD);
+  SerialServo.begin(SERVO_BAUDRATE, SERIAL_8N1, S_RXD, S_TXD);
   robot.init();
+
+  SerialGPS.begin(GPS_BAUDRATE, SERIAL_8N1, GPS_RXD, GPS_TXD);
 }
 
 void loop() {
@@ -51,4 +57,11 @@ void loop() {
   if (robot.process()) { // periodicke odesilani dat
     comm.send(robot.status, robot.mode, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder);
   }
+
+  if (gps.process()) {
+    uint8_t buffer[80];
+    uint8_t length = gps.get(buffer);
+    comm.send('P', buffer, length);
+  }
+  
 }

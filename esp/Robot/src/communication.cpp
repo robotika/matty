@@ -13,6 +13,14 @@ void Comm::confirm(char message) {
   transmit(&txData, 2);
 }
 
+void Comm::send(uint8_t message, void* data, uint8_t length) {
+  TransmitData tx;
+  tx.counter = infoCounter++;
+  tx.message = message;
+  memcpy(&tx.data, data, length);
+  transmit(&tx, length + 2);
+}
+
 void Comm::send(uint8_t status, uint8_t mode, uint16_t voltage, uint16_t current, int16_t speed, float angle, int32_t encoder[4]) {
   txData.counter = infoCounter++;
   txData.message = 'I';
