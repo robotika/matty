@@ -9,14 +9,6 @@ void Robbus::begin() {
   status = WAIT_FOR_RECEIVE;
 }
 
-bool Robbus::update() {
-  if (transmitPeriod != 0 && millis() - transmitTime >= transmitPeriod) {
-    transmitTime += transmitPeriod;
-    return 1;
-  }
-  return 0;
-}
-
 // Kontroluje, zda je prijat znak a zpracuje jej
 bool Robbus::process() {
 #ifdef ESC        
@@ -119,8 +111,4 @@ uint8_t inline Robbus::crc(uint8_t* data, uint8_t len) {
     c += data[i];
   } 
   return 256-c; 
-}
-
-void Robbus::setPeriod(uint16_t t) {
-  transmitPeriod = t;
 }

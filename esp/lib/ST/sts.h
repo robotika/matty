@@ -3,6 +3,11 @@
 
 #include <Arduino.h>
 
+#define ST_PACKET_READY     0
+#define ST_ERROR_TIMEOUT    -1
+#define ST_ERROR_READ       -2
+#define ST_ERROR_CHECKSUM   -3
+
 //-------SRAM--------
 
 #define SMS_STS_TORQUE_ENABLE 40
@@ -29,6 +34,24 @@
 #define SMS_STS_PRESENT_CURRENT_L 69
 #define SMS_STS_PRESENT_CURRENT_H 70
 
+#define ST_MAX_PARAMS 27
+
+struct __attribute__((__packed__)) StPacket { 
+  uint8_t header1, header2;
+  union {
+    struct {
+      uint8_t id;
+      uint8_t length;
+      union {
+        uint8_t instruction;
+        uint8_t error;
+      };
+      uint8_t params[ST_MAX_PARAMS];
+    };
+    uint8_t data[ST_MAX_PARAMS + 3];
+  };
+};
+
 class Sts {
   public:
     Sts(Stream*);
@@ -48,10 +71,10 @@ class Sts {
     int16_t  readSyncPosition(uint8_t num, uint8_t id[], uint16_t position[]);
   private:
   	Stream* serial;
-    uint8_t rxBuffer[32];
-    void transmitPacket(uint8_t[]);
-    uint16_t readPacket();
-    void clearRxBuffer();
+    StPacket rxBuffer, txBuffer;
+    void    transmitPacket();
+    int8_t  readPacket(uint8_t len = 0);
+    void    clearRxBuffer();
 };
 
 #endif

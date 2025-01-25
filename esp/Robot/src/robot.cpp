@@ -34,12 +34,19 @@ bool  Robot::go(float speed, float steer) {
   this->speed = speed;
   this->steer = steer;
   timeGo = millis();
+  status = RUNNING;
   return 1;
 }
 
-void  Robot::stop() {
-  speed = 0;
-  steer = as5600.angle() / 100.0f;
+void  Robot::stop(bool off) {
+  if (!off) {
+    speed = 0;
+    steer = as5600.angle() / 100.0f;
+  } else {
+    int16_t p[SERVOS] = {0, 0, 0, 0};  
+    writeSyncSpeed(SERVOS, idServo, p);
+    status = 0;
+  }
 }
 
 void  Robot::control() {
@@ -103,17 +110,20 @@ void Robot::updateEncoder(uint16_t p[SERVOS]) {
 }
 
 void Robot::updateOdometry(uint32_t t) {
+  joint = as5600.angle();                // aktualni uhel kloubu ve °
   actualSpeed = STEP * (delta_enc[0] + delta_enc[1] + delta_enc[2] + delta_enc[3]) / SERVOS * 1000.0f / t;
 }
 
 bool Robot::process() {
-  static uint32_t timeControl;   // cas posleniho rizeni
   uint32_t t = millis();
-  if ((int32_t)t - (int32_t)timeGo >= (int32_t)robotTimeout) {
-    stop();
+
+  if ((int32_t)t - (int32_t)timeGo >= (int32_t)robotTimeout) { // timeout
     timeGo = t + 36000000;
+    stop(1);
   }
-  if (t - timeControl >= CONTROL_PERIOD) {
+
+  static uint32_t timeControl;   // cas posledniho rizeni
+  if ((status & RUNNING) && t - timeControl >= CONTROL_PERIOD) {
     timeControl = t;
     control();
   }
@@ -121,12 +131,21 @@ bool Robot::process() {
   static uint32_t timeScan;   // cas posleniho scanu, odometrie
   if (scanPeriod != 0 && t - timeScan >= scanPeriod) {
     uint16_t p[SERVOS];
-    if (readSyncPosition(SERVOS, idServo, p) == -1) {
-      return 0; // chyba cteni
+    status &= RUNNING;
+    if (readSyncPosition(SERVOS, idServo, p) != ST_PACKET_READY) {
+      status |= ERROR_ENCODER;
     }
     updateEncoder(p);
-    updatePower();
     updateOdometry(t - timeScan);
+    updatePower();
+    if (current < 0) { // chyba cteni proudu
+      status |= ERROR_POWER;
+    }
+    if (voltage < VOLTAGE_STOP_LIMIT) {
+      status |= EMERGENCY_STOP;
+    } else if (voltage < VOLTAGE_LOW_LIMIT) {
+      status |= VOLTAGE_LOW;
+    }
     timeScan = t;
     return 1;
   }
@@ -136,12 +155,12 @@ bool Robot::process() {
 void Robot::updatePower() {
   uint16_t currentRaw[SERVOS];
   int16_t result = bulkRead(SERVOS, idServo, SMS_STS_PRESENT_CURRENT_L, (uint8_t*)currentRaw, 2);
-  if (result != 0) {
-    current = 0;
+  if (result != ST_PACKET_READY) {
+    current = -1;
   } else {
     current = (currentRaw[0] + currentRaw[1] + currentRaw[2] + currentRaw[3]) * 10.0f;
   }
-  voltage = power.getBusVoltage_V() * 1000.0F;
+  voltage = power.getBusVoltage_V() * 1000.0f;
 }
 
 void Robot::setTime(uint16_t period, uint16_t t) { // nastavi periodu pro cteni odomerie a odesilani dat, timeout pro automaticke zastaveni, pokud neprijde novy povel G

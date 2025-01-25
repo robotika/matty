@@ -3,13 +3,8 @@
 #include "robot.h" 
 #include "communication.h"
 
-#define SPEED_LIMIT   500   // mm/s
-#define ANGLE_LIMIT    45   // 0,01°
-
-#define VOLTAGE_LIMIT  (5 * 1000) // 5 V
 #define REMOTE_CONTROL  1
 #define AUTONOMOUS      2
-#define EMERGENCY_STOP  3
 
 //EspNow espnow;
 
@@ -24,7 +19,7 @@ void receiveCommand() {
     if (comm.get() == PACKET_READY) {               // nacteni dat
       comm.confirm('A');
       switch (comm.rxData.command) {
-        case 'S': robot.stop();
+        case 'S': robot.stop(1);
                   break;
         case 'R': robot.reset();
                   break;
@@ -54,6 +49,6 @@ void loop() {
   receiveCommand();
 
   if (robot.process()) { // periodicke odesilani dat
-    comm.send(1, 2, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder);
+    comm.send(robot.status, robot.mode, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder);
   }
 }
