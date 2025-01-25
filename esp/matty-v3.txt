@@ -1,0 +1,76 @@
+Robbus datový rámec:
+
+SYNC  LENGTH  DATA0 ..... DATA122 CRC 
+ 1B     1B       1 - 123 B         1B
+ 
+SYNC  0x55
+ESC   0x56 (volitelné escapování znaků SYNC a ESC)
+CRC = 256 - (LENGTH + DATA0 + DATA1 + ... DATAn)
+
+Komunikační protokol Matty v2:
+
+PC -> ESP
+
+DATA:
+counter command   data
+ uint8    S                                                       ... stop (zastaví robota = vypne pohony)
+          R                                                       ... reset (stop + nulování enkodérů)
+          M       uint8 mode                                      ... nastavení režimu robota (IDLE, REMOTE, AUTO)
+          G       int16 speed (mm/s)    int16 steer (0,01°)       ... nastavení rychlosti jízdy a požadovaného úhlu kloubu    
+          L       int16 maxspeed (mm/s) int16 maxsteer (0,01°/s)  ... nastavení maximální rychlosti jízdy a změny úhlu kloubu    
+          T       uint16 period (ms)    uint16 timeout (ms)       ... nastavení periody posílání dat z robota a timeout pro příjem povelů
+          P       uint8 mode                                      ... nastavení režimu gps (0 - vypnuto, 1 - surová data, 2 - ...)
+  
+ESP -> PC
+
+potvrzení přijatého příkazu DATA:  
+
+counter potvrzení
+ uint8    A/N
+  
+stavová zpráva (odesíláná pravidelně dle nastavené periody) DATA:
+
+counter message  status  mode  voltage(mV)  current(mA)  speed(mm/s) angle(0,01°) encoder0(mm)  encoder1(mm)  encoder2(mm)  encoder3(mm)
+ uint8    I       uint8  uint8  uint16        uint16       int16         int16      uint16        uint16        uint16        uint16
+
+status (příznakové bity): 
+  EMERGENCY_STOP  = 0x01
+  VOLTAGE_LOW     = 0x02
+  BUMPER_FRONT    = 0x04
+  BUMPER_BACK     = 0x08
+  ERROR_ENCODER   = 0x10
+  ERROR_POWER     = 0x20
+  RUNNING         = 0x80
+
+gps zpráva (odesílána ihned po přijetí z gps):
+
+counter message  data 
+ uint8    P      nmea ($  ... CRLF)
+  
+=================================================================  
+bitova negace pro escape
+CRC 8bit soucet/doplnek
+
+- citace odeslany a prijatych zprav,
+- float 4 bytes
+- zlomky mm ... 
+
+
+md-2024-12-23
+- na vystupu citac zprav uint8, s pretecenim
+- cmd mozna take s nejakym citacem uint8 (nebo rnd number) s tim, ze ve stavove zprave bude posledni prijaty
+- stav bych rozsiril o aktualni int16 speed a encodery bych nechal raw data prijata (asi uint16) - nevim, jak rychle se "otoci"
+- ESC bych tedy asi pouzival i kdyz jsem to hodne dlouho nepouzival :) [pravda, ze jsem nepouzival ani serial packety a na CAN a Eth jsou packety jasne definovane]
+
+ml-2024-12-23
+- ok, jen bych raději přijaté příkazy přímo potvrzoval a do stavové zprávy to nedával
+
+md-2024-12-23 17:00 :)
+- predpokladam, pravidelne posilani prikazu rychlosti pro kazdou prijatou stavovou zpravu a proto jsem myslel ty odpovedi spojit. Jeste je varianta
+  tam v te stavove zprave mit i "desired speed + angle", takze by volatel (PC) videl, jestli se jeho prikaz propsal ... a kdyz se nepropise, tak
+  by mel radeji zastavit ... ale zase pokud pojede dlouho rovne, tak to nepozna a pokud prijemce "neposloucha", tak ho stejne nezastavi :)
+- asi by tam mel byt i nejaky "watchdog" - aneb, kdyz ridici PC dlouho nic neposila, tak by nemel jet maximalkou proti zdi ...
+- u ATmega8 boardu (a Eurobot robotu) jsme pouzivali "executeAt" tj. pro nejake shora rizene "rampy" ... ale mozna take obsolete
+  https://robotika.cz/articles/atmega8-board/cs
+
+
