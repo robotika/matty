@@ -1,10 +1,7 @@
 # matty
-Conection joint encoder to esp board:
+Conection gps to esp board:
 
-  black   - GND
-
-  red     - 3V3
-
-  white   - IO5 
-
-![Conection joint encoder - esp board](../../Images/encoder-esp.jpg)
+GND                    // black
+3V3                    // red
+GPS_RXD       16       // grren  / GPS16 / B_C2
+GPS_TXD       27       // blue   / GPS17 / B_C1  
