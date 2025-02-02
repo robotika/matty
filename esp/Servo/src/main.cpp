@@ -1,11 +1,11 @@
 #include "config.h"
 #include "sts.h"
 
-Sts robot(&ServoPort); 
+Sts robot(&SerialServo); 
 
 void setup() {
   Serial.begin(115200);
-  ServoPort.begin(1000000, SERIAL_8N1, S_RXD, S_TXD);
+  SerialServo.begin(1000000, SERIAL_8N1, S_RXD, S_TXD);
 }
 
 #define SERVOS 4

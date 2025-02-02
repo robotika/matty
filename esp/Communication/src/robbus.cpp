@@ -22,6 +22,8 @@ bool Robbus::process() {
 #ifdef ESC        
   static uint8_t esc = 0;
 #endif
+  if (status != WAIT_FOR_RECEIVE && status != RECEIVE_PROGRESS) return 1; // nemelo by nikdy nastat, ale jistota
+
   while (serial->available()) {
     uint8_t x = serial->read();
     if (status == WAIT_FOR_RECEIVE && x == SYNC) {
@@ -29,8 +31,8 @@ bool Robbus::process() {
       receiveTime = millis(); // nulovani timeoutu
       status = RECEIVE_PROGRESS;
     } else {
-      if (status == RECEIVE_PROGRESS) {
-#ifdef ESC        
+      if (status == RECEIVE_PROGRESS) {  
+#ifdef ESC      
         if (x == ESC) {
           esc = 1;
           continue;
@@ -38,11 +40,12 @@ bool Robbus::process() {
           x = ~x;
           esc = 0;
         }
-#endif        
+#endif             
         rxPacket.d[rxIndex] = x;  // ulozeni dat do buferu
         if (rxIndex > LENGTH_OFFSET) { 
           if (rxIndex == rxLength + 2) { // posledni znak paketu (CRC)
             status = PACKET_COMPLETE;
+            break;
           }
         } else if (rxIndex == LENGTH_OFFSET) { // delka paketu
           rxLength = x;
