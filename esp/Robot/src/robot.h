@@ -10,6 +10,9 @@
 #define dT          (CONTROL_PERIOD * 1e-3f) // perioda rizeni 0.02 s
 #define SERVOS      4
 
+#define BUMPER_FRONT_PIN  34
+#define BUMPER_BACK_PIN   35
+
 class Robot : public Sts {
   public:
     Robot(Stream*);

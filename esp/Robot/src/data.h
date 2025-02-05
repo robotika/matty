@@ -8,6 +8,8 @@
 enum ROBOT_STATUS {
   EMERGENCY_STOP  = 0x01,
   VOLTAGE_LOW     = 0x02,
+  BUMPER_FRONT    = 0x04,
+  BUMPER_BACK     = 0x08,
   ERROR_ENCODER   = 0x10,
   ERROR_POWER     = 0x20,
   RUNNING         = 0x80
@@ -41,6 +43,12 @@ struct __attribute__((packed)) TransmitPacket {
   int16_t  speed;         // mm/s
   int16_t  angle;         // 0,01°
   uint16_t encoder[4];    // mm
+};
+
+struct __attribute__((packed)) TransmitData {
+  uint8_t  counter;
+  uint8_t  message;
+  uint8_t  data[128];
 };
 
 // ESP NOW

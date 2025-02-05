@@ -46,10 +46,9 @@
 // ========================================================================
 
 // the uart used to control servos.
-#define SerialServo     Serial1  /* UART1 */
-#define S_RXD           18
-#define S_TXD           19
-#define SERVO_BAUDRATE  1000000L 
+#define S_RXD 18
+#define S_TXD 19
+#define ServoPort   Serial1  /* UART1 */
 
 // ========================================================================
 //    ROBBUS
@@ -62,9 +61,9 @@
 //    GPS
 // ========================================================================
 
-#define SerialGPS     Serial2  /* UART2 */
-#define GPS_RXD       16       // zelena / GPS16 / B_C2
-#define GPS_TXD       27       // modra  / GPS17 / B_C1 
-#define GPS_BAUDRATE  9600L 
+#define GPS_RXD   16       // zelena / GPS16 / B_C2
+#define GPS_TXD   27       // modra  / GPS17 / B_C1 
+#define SerialGPS Serial2  /* UART2 */
+#define GPS_BAUDRATE 9600L 
 
 #endif
