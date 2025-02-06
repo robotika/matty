@@ -35,6 +35,13 @@
     #define A              315  // rozchod
     #define D              135  // prumer kol
   #endif
+
+  #if (MATTY == 03)
+    #define ZERO_JOINT   0.00f  // nulova poloha kloubu Matty M03 - Martin Dlouhy
+    #define L              320  // rozvor
+    #define A              315  // rozchod
+    #define D              135  // prumer kol
+  #endif
 #endif
 
 #define ANGLE_MAX       45  // maximalni uhel natoceni kloubu
