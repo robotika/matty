@@ -13,6 +13,7 @@ void loop() {
     char a = Serial.read();
     if (a == 'a') gps.config(1);
     if (a == 's') gps.config(0);
+    if (a == 'd') gps.config(2);
   }
 
   if (gps.process()) {

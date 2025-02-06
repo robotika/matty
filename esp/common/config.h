@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <Arduino.h>
+#include "platform.h"
 
 //#define DEBUG
 
@@ -9,7 +10,7 @@
 //    ROBOT
 // ========================================================================
 
-#define MATTY 01
+//#define MATTY 01
 
 #define ROBOT_TIMEOUT   250 // timeout do automatickeho zastaveni, pokud neprijde povel G
 #define CONTROL_PERIOD   20 // perioda rizeni  20 ms (50 Hz)
@@ -18,18 +19,29 @@
 #define VOLTAGE_STOP_LIMIT    (int)(0.5 * 1000)  // 0.5 V ... emergency stop
 #define VOLTAGE_LOW_LIMIT     (int)(10.5 * 1000) // 10.5 V
 
-#if (MATTY == 01)
-  #define ZERO_JOINT 178.59f  // nulova poloha kloubu Matty M01
-  #define L              320  // rozvor
-  #define A              311  // rozchod
-  #define D              135  // prumer kol
-#endif
+#ifndef MATTY
+  #error "Not defined MATTY platform"
+#else
+  #if (MATTY == 01)
+    #define ZERO_JOINT 178.59f  // nulova poloha kloubu Matty M01
+    #define L              320  // rozvor
+    #define A              311  // rozchod
+    #define D              135  // prumer kol
+  #endif
+  
+  #if (MATTY == 02)
+    #define ZERO_JOINT 185.52f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
+    #define L              320  // rozvor
+    #define A              315  // rozchod
+    #define D              135  // prumer kol
+  #endif
 
-#if (MATTY == 02)
-  #define ZERO_JOINT 185.52f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
-  #define L              320  // rozvor
-  #define A              315  // rozchod
-  #define D              135  // prumer kol
+  #if (MATTY == 03)
+    #define ZERO_JOINT   0.00f  // nulova poloha kloubu Matty M03 - Martin Dlouhy
+    #define L              320  // rozvor
+    #define A              315  // rozchod
+    #define D              135  // prumer kol
+  #endif
 #endif
 
 #define ANGLE_MAX       45  // maximalni uhel natoceni kloubu
