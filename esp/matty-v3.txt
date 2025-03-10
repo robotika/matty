@@ -20,6 +20,7 @@ counter command   data
           L       int16 maxspeed (mm/s) int16 maxsteer (0,01°/s)  ... nastavení maximální rychlosti jízdy a změny úhlu kloubu    
           T       uint16 period (ms)    uint16 timeout (ms)       ... nastavení periody posílání dat z robota a timeout pro příjem povelů
           P       uint8 mode                                      ... nastavení režimu gps (0 - vypnuto, 1 - surová data, 2 - ...)
+          V                                                       ... version
   
 ESP -> PC
 
@@ -46,7 +47,13 @@ gps zpráva (odesílána ihned po přijetí z gps):
 
 counter message  data 
  uint8    P      nmea ($  ... CRLF)
-  
+
+
+version zpráva
+
+counter message  data
+ uint8    V      uint8 (version)
+
 =================================================================  
 bitova negace pro escape
 CRC 8bit soucet/doplnek
