@@ -34,6 +34,14 @@ void receiveCommand() {
                   break;
         case 'P': gps.config(comm.rxData.mode);
                   break;
+        case 'V': {
+          // send current version
+          uint8_t buffer[1];
+          buffer[0] = ROBOT_FW_VERSION;
+          uint8_t length = 1;
+          comm.send('V', buffer, length);
+          break;
+        }
       }
     } else {
       comm.confirm('N');
