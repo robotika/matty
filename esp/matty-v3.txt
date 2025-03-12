@@ -52,7 +52,7 @@ counter message  data
 version zpráva
 
 counter message  data
- uint8    V      uint8 (version)
+ uint8    V      uint8 (serial number), uint8 (version)
 
 =================================================================  
 bitova negace pro escape

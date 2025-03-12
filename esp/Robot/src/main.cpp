@@ -36,9 +36,10 @@ void receiveCommand() {
                   break;
         case 'V': {
           // send current version
-          uint8_t buffer[1];
-          buffer[0] = ROBOT_FW_VERSION;
-          uint8_t length = 1;
+          uint8_t buffer[2];
+          buffer[0] = MATTY;  // serial number
+          buffer[1] = ROBOT_FW_VERSION;
+          uint8_t length = 2;
           comm.send('V', buffer, length);
           break;
         }
