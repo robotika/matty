@@ -172,6 +172,21 @@ void Sts::writeSyncSpeed(uint8_t num, uint8_t id[], int16_t speed[]) {
   syncWrite(num, id, SMS_STS_GOAL_SPEED_L, (uint8_t*)speed, 2);
 }
 
+void Sts::enableTorqueServos(uint8_t num, uint8_t id[], uint8_t enable) {
+  uint8_t e[16];
+  memset(e, enable, num);
+  syncWrite(num, id, SMS_STS_TORQUE_ENABLE, e, 1);
+}
+
+// Divne, prozkoumat, co to presne udela
+void Sts::stopServos(uint8_t num, uint8_t id[]) {
+  enableTorqueServos(num, id, 0);
+  delay(10);
+  enableTorqueServos(num, id, 1);
+  int16_t p[] = {0, 0, 0, 0};  
+  writeSyncSpeed(num, id, p);
+}
+
 uint8_t  Sts::isMoving(uint8_t ID) {
   uint8_t moving;
   read(ID, SMS_STS_MOVING, &moving, 1);
@@ -185,7 +200,7 @@ int16_t  Sts::readPosition(uint8_t ID) {
 }
 
 uint8_t  Sts::isSyncMoving(uint8_t num, uint8_t id[]) {
-  uint8_t p[2];
+  uint8_t p[4];
   bulkRead(num, id, SMS_STS_MOVING, (uint8_t*)&p, 1);
   for (uint8_t i = 0; i < num; i++) {
     if (p[i] != 0) return 1;
