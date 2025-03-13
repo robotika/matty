@@ -36,18 +36,28 @@ bool  Robot::go(float speed, float steer) {
   this->speed = speed;
   this->steer = steer;
   timeGo = millis();
-  status = RUNNING;
+  status |= RUNNING;
   return 1;
 }
 
-void  Robot::stop(bool off) {
-  if (!off) {
-    speed = 0;
-    steer = as5600.angle() / 100.0f;
-  } else {
-    int16_t p[SERVOS] = {0, 0, 0, 0};  
-    writeSyncSpeed(SERVOS, idServo, p);
-    status = 0;
+void  Robot::stop(uint8_t mode) {
+  // mode = STOP (0)      ... plynule zastaveni, poloha kloubu je zachovana
+  // mode = BREAK (1)     ... aktivni zabrzdeni serv
+  // mode = POWEROFF (2)  ... odpojeni serv
+  switch (mode) {
+    case STOP: 
+            speed = 0;
+            steer = as5600.angle() / 100.0f;
+            break;
+    case BREAK: 
+            stopServos(SERVOS, idServo);
+            break;
+    case POWEROFF: 
+            enableTorqueServos(SERVOS, idServo, 0);
+            break;
+  }
+  if (mode != STOP) {
+    status &= ~RUNNING;
   }
 }
 
@@ -116,12 +126,26 @@ void Robot::updateOdometry(uint32_t t) {
   actualSpeed = STEP * (delta_enc[0] + delta_enc[1] + delta_enc[2] + delta_enc[3]) / SERVOS * 1000.0f / t;
 }
 
+void Robot::updateSystem() {
+  updatePower();
+  if (current < 0) { // chyba cteni proudu
+    status |= ERROR_POWER;
+  }
+  if (voltage < VOLTAGE_STOP_LIMIT) {
+    status |= EMERGENCY_STOP;
+  } else if (voltage < VOLTAGE_LOW_LIMIT) {
+    status |= VOLTAGE_LOW;
+  }
+  if (digitalRead(BUMPER_FRONT_PIN) == 0) status |= BUMPER_FRONT;
+  if (digitalRead(BUMPER_BACK_PIN)  == 0) status |= BUMPER_BACK;
+}
+
 bool Robot::process() {
   uint32_t t = millis();
 
   if ((int32_t)t - (int32_t)timeGo >= (int32_t)robotTimeout) { // timeout
     timeGo = t + 36000000;
-    stop(1);
+    stop(DEFAULT_STOP);
   }
 
   static uint32_t timeControl;   // cas posledniho rizeni
@@ -139,17 +163,7 @@ bool Robot::process() {
     }
     updateEncoder(p);
     updateOdometry(t - timeScan);
-    updatePower();
-    if (current < 0) { // chyba cteni proudu
-      status |= ERROR_POWER;
-    }
-    if (voltage < VOLTAGE_STOP_LIMIT) {
-      status |= EMERGENCY_STOP;
-    } else if (voltage < VOLTAGE_LOW_LIMIT) {
-      status |= VOLTAGE_LOW;
-    }
-    if (digitalRead(BUMPER_FRONT_PIN) == 0) status |= BUMPER_FRONT;
-    if (digitalRead(BUMPER_BACK_PIN)  == 0) status |= BUMPER_BACK;
+    updateSystem();
     timeScan = t;
     return 1;
   }
