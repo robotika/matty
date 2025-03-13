@@ -30,7 +30,7 @@
   #endif
   
   #if (MATTY == 02)
-    #define ZERO_JOINT 185.52f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
+    #define ZERO_JOINT -178.15f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
     #define L              320  // rozvor
     #define A              315  // rozchod
     #define D              135  // prumer kol
