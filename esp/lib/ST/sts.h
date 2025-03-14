@@ -64,6 +64,8 @@ class Sts {
     void     writePosition(uint8_t ID, int16_t position, uint16_t speed = 2000);
     void     writeSyncPosition(uint8_t num, uint8_t id[], int16_t position[]);
     void     writeSyncSpeed(uint8_t num, uint8_t id[], int16_t speed[]);
+    void     enableTorqueServos(uint8_t num, uint8_t id[], uint8_t enable);
+    void     stopServos(uint8_t num, uint8_t id[]);
 
     uint8_t  isMoving(uint8_t ID);
     int16_t  readPosition(uint8_t ID);

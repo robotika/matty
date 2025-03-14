@@ -10,15 +10,13 @@
 //    ROBOT
 // ========================================================================
 
-//#define MATTY 01
-
 #define ROBOT_FW_VERSION  6 // please increase with every change of Robot project (or common library)
 
 #define ROBOT_TIMEOUT   250 // timeout do automatickeho zastaveni, pokud neprijde povel G
 #define CONTROL_PERIOD   20 // perioda rizeni  20 ms (50 Hz)
 #define SCAN_PERIOD       0 // perioda scanovani pro odometrii, default vypnuto
 
-#define VOLTAGE_STOP_LIMIT    (int)(0.5 * 1000)  // 0.5 V ... emergency stop
+#define VOLTAGE_STOP_LIMIT    (int)(2.5 * 1000)  // 2.5 V ... emergency stop
 #define VOLTAGE_LOW_LIMIT     (int)(10.5 * 1000) // 10.5 V
 
 #ifndef MATTY
@@ -29,10 +27,12 @@
     #define L              320  // rozvor
     #define A              311  // rozchod
     #define D              135  // prumer kol
+
+    #define USE_ESP_NOW
   #endif
   
   #if (MATTY == 02)
-    #define ZERO_JOINT 185.52f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
+    #define ZERO_JOINT -178.15f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
     #define L              320  // rozvor
     #define A              315  // rozchod
     #define D              135  // prumer kol
@@ -69,7 +69,8 @@
 //    ROBBUS
 // ========================================================================
 
-#define ESC               0x56      // escapovani znaku SYNC a ESC
+#define SerialComm      Serial   /* UART0 */
+#define ESC               0x56   // escapovani znaku SYNC a ESC
 #define ROBBUS_BAUDRATE 115200L 
 
 // ========================================================================

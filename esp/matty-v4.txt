@@ -13,7 +13,7 @@ PC -> ESP
 
 DATA:
 counter command   data
- uint8    S                                                       ... stop (zastaví robota = vypne pohony)
+ uint8    S       uint8 mode                                      ... stop (mode = 0 ... STOP, = 1 ... BREAK, = 2 ... POWER OFF)
           R                                                       ... reset (stop + nulování enkodérů)
           M       uint8 mode                                      ... nastavení režimu robota (IDLE, REMOTE, AUTO)
           G       int16 speed (mm/s)    int16 steer (0,01°)       ... nastavení rychlosti jízdy a požadovaného úhlu kloubu    

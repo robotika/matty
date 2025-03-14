@@ -53,13 +53,13 @@ struct __attribute__((packed)) TransmitData {
 
 // ESP NOW
 
-struct __attribute__((__packed__)) EspReceiveData {
+struct __attribute__((__packed__)) RcReceiveData {
   uint8_t mode;
   int16_t speed;
   int16_t steer;
 };
 
-struct __attribute__((__packed__)) EspTransmitData {
+struct __attribute__((__packed__)) RcTransmitData {
   uint8_t status;
   int16_t voltage;
   int16_t current;
