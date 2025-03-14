@@ -10,6 +10,8 @@
 //    ROBOT
 // ========================================================================
 
+#define ROBOT_FW_VERSION  6 // please increase with every change of Robot project (or common library)
+
 #define ROBOT_TIMEOUT   250 // timeout do automatickeho zastaveni, pokud neprijde povel G
 #define CONTROL_PERIOD   20 // perioda rizeni  20 ms (50 Hz)
 #define SCAN_PERIOD       0 // perioda scanovani pro odometrii, default vypnuto
