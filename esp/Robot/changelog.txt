@@ -1,0 +1,8 @@
+changelog:
+
+ver6 - 2025/03/10 - added 'V' (version) command
+ver5 - 2025/02/06 - refactoring, shared config for Matty Mxx
+ver4 - 2025/02/05 - GPS integration
+ver3 - 2025/01/25 - new servo library
+ver2 - 2025/01/14 - real robot control from PC
+ver1 - 2025/01/01 - basic communication, initial Robot commit
