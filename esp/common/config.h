@@ -10,7 +10,7 @@
 //    ROBOT
 // ========================================================================
 
-#define ROBOT_FW_VERSION  6 // please increase with every change of Robot project (or common library)
+#define ROBOT_FW_VERSION  7 // please increase with every change of Robot project (or common library)
 
 #define ROBOT_TIMEOUT   250 // timeout do automatickeho zastaveni, pokud neprijde povel G
 #define CONTROL_PERIOD   20 // perioda rizeni  20 ms (50 Hz)
@@ -32,7 +32,7 @@
   #endif
   
   #if (MATTY == 02)
-    #define ZERO_JOINT -178.15f  // nulova poloha kloubu Matty M02 - Martin Dlouhy
+    #define ZERO_JOINT -178.15f // nulova poloha kloubu Matty M02 - Martin Dlouhy
     #define L              320  // rozvor
     #define A              315  // rozchod
     #define D              135  // prumer kol
@@ -56,7 +56,7 @@
 #define LINE        (1 / STEP)            // steps/mm
 
 // ========================================================================
-//    SERVO
+//    SERVO ST
 // ========================================================================
 
 // the uart used to control servos.
@@ -78,8 +78,14 @@
 // ========================================================================
 
 #define SerialGPS     Serial2  /* UART2 */
-#define GPS_RXD       16       // zelena / GPS16 / B_C2
-#define GPS_TXD       27       // modra  / GPS17 / B_C1 
+#define GPS_RXD       16       // zelena / GPIO16 / B_C2
+#define GPS_TXD       27       // modra  / GPIO17 / B_C1 
 #define GPS_BAUDRATE  9600L 
+
+// ========================================================================
+//    SERVO
+// ========================================================================
+
+#define SERVO_PIN     4        // servo GPIO4
 
 #endif

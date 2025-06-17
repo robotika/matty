@@ -21,7 +21,8 @@ counter command   data
           T       uint16 period (ms)    uint16 timeout (ms)       ... nastavení periody posílání dat z robota a timeout pro příjem povelů
           P       uint8 mode                                      ... nastavení režimu gps (0 - vypnuto, 1 - surová data, 2 - ...)
           V                                                       ... version
-  
+          C       uint16_t                                        ... analogové servo na pinu GPIO4 (šířka pulzu 1000 ... 2000 us)
+            
 ESP -> PC
 
 potvrzení přijatého příkazu DATA:  

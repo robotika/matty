@@ -6,6 +6,7 @@
 #include "as5600.h"
 #include "power.h"
 #include "sts.h"
+#include "servo.h"  
 
 #define STOP            0
 #define REMOTE_CONTROL  1
@@ -33,6 +34,7 @@ class Robot : public Sts {
     void  setTime(uint16_t p, uint16_t t); // nastavi periodu pro odomerii a odesilani dat, timeout pro automaticke zastaveni, pokud neprijde novy povel G
     void  setLimits(uint16_t maxSpeed, uint16_t maxAngleSpeed); // nastavi maximalni rychlosti
     void  updateSystem();
+    void  setServo(uint16_t position);
 
     float     x, y, a;  // aktualni pozice robota [mm, mm, rad]
     uint8_t   status;

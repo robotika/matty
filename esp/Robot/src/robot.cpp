@@ -4,6 +4,7 @@ uint8_t idServo[SERVOS] = {1, 2, 3, 4};
 
 AS5600 as5600(ZERO_JOINT);  // zero joint position
 Power power;
+Servo servo;
 
 Robot::Robot(Stream* stSerial) : Sts(stSerial) {
 }
@@ -99,7 +100,7 @@ void  Robot::control() {
 
 // TODO dodelat omezeni maximalni rychlosti
 
-//  Serial.printf("steer: %5.1f f0: %5.1f dfi: %5.2f ro: %5.1f ro1: %5.1f s: %5.1f s1: %5.1f dv: %5.1f dw: %5.1f\n\r", steer, f0, dfi * 180 / PI, ro, ro1, s, s1, dv, dw);
+//  Serial.printf("steer: %5.1f f0: %5.1f dfi: %5.2f ro: %5.1f ro1: %5.1f s: %5.1f s1: %5.1f dv: %5.1f dw: %5.1f\n\r", steer, joint, dfi * 180 / PI, ro, ro1, s, s1, dv, dw);
 
   int16_t p[SERVOS];  
   p[0] = -(vl + dv - dw)  * LINE;
@@ -189,4 +190,13 @@ void Robot::setTime(uint16_t period, uint16_t t) { // nastavi periodu pro cteni 
 void Robot::setLimits(uint16_t maxSpeed, uint16_t maxAngleSpeed) { // nastavi maximalni rychlosti
   if (maxSpeed <= SPEED_MAX) v_max = maxSpeed;
   if (maxAngleSpeed <= STEER_MAX) a_max = maxAngleSpeed;
+}
+
+void Robot::setServo(uint16_t position) {
+  if (position > 0) {
+    servo.attach(SERVO_PIN);
+    servo.write(position);
+  } else {
+    servo.detach();
+  }
 }

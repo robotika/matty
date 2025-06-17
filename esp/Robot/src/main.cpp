@@ -1,4 +1,4 @@
-#include "data.h"
+  #include "data.h"
 #include "robot.h" 
 #include "communication.h"
 #include "gps.h"
@@ -65,6 +65,8 @@ void receiveCommand() {
                   break;
         case 'P': gps.config(comm.rxData.mode);
                   break;
+        case 'R': robot.reset();
+                  break;
         case 'V': {
           // send current version
           uint8_t buffer[2];
@@ -74,7 +76,7 @@ void receiveCommand() {
           comm.send('V', buffer, length);
           break;
         }
-        case 'R': robot.reset();
+        case 'C': robot.setServo(comm.rxData.period); // container
                   break;
       }
       if (robot.mode == AUTONOMOUS) {
