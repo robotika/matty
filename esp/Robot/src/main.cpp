@@ -62,19 +62,26 @@ void receiveCommand() {
         case 'L': robot.setLimits(comm.rxData.speed, comm.rxData.steer);
                   break;
         case 'T': robot.setTime(comm.rxData.period, comm.rxData.timeout);
+                  robot.led(0, COLOR::GREEN);
                   break;
         case 'P': gps.config(comm.rxData.mode);
                   break;
-        case 'V': {
-          // send current version
-          uint8_t buffer[2];
-          buffer[0] = MATTY;  // serial number
-          buffer[1] = ROBOT_FW_VERSION;
-          uint8_t length = 2;
-          comm.send('V', buffer, length);
-          break;
-        }
         case 'R': robot.reset();
+                  break;
+        case 'V': { // send serial number, current version
+                    uint8_t buffer[] = {MATTY, ROBOT_FW_VERSION};
+                    comm.send('V', buffer, 2);
+                  }
+                  break;
+#ifdef SERVO_PIN                  
+        case 'C': robot.setServo(comm.rxData.period); // container
+                  break;
+#endif                  
+#ifdef LED_PIN                  
+        case 'D': robot.led(comm.rxData.index, comm.rxData.rgb); // neopixel led
+                  break;
+#endif                  
+        case 'X': robot.writePosition((uint8_t)comm.rxData.period, comm.rxData.timeout, 1000);
                   break;
       }
       if (robot.mode == AUTONOMOUS) {
@@ -113,13 +120,24 @@ void loop() {
   receiveCommand();
 
   if (robot.process()) { // periodicke odesilani dat
-    comm.send(robot.status, robot.mode, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder);
+    comm.send(robot.status, robot.mode, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder, robot.roll, robot.pitch, robot.yaw);
+    static uint8_t lastStatus;
+    if ((lastStatus ^ robot.status) & ROBOT_STATUS::EMERGENCY_STOP) {
+      if (robot.status & ROBOT_STATUS::EMERGENCY_STOP) {
+        robot.led(1, COLOR::RED);
+      } else {
+        robot.led(1, COLOR::GREEN);
+      }
+    }
+    lastStatus = robot.status;
   }
 
   if (gps.process()) {
     uint8_t buffer[80];
     uint8_t length = gps.get(buffer);
-    comm.send('P', buffer, length);
+    if (length != 0) {
+      comm.send('P', buffer, length);
+    }
   }
   
 }

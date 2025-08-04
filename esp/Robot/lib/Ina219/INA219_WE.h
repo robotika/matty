@@ -26,12 +26,7 @@
 #endif
 #include "ina219_config.h"
 
-#ifdef USE_TINY_WIRE_M_
- #include <TinyWireM.h>
-#endif
-#ifndef USE_TINY_WIRE_M_
- #include <Wire.h>
-#endif
+#include "i2c.h"
 
 typedef enum INA219_ADC_MODE{
     BIT_MODE_9      = 0b00000000,   
@@ -85,8 +80,8 @@ class INA219_WE
     
         // Constructors: if not passed 0x40 / Wire will be set as address / wire object
 #ifndef USE_TINY_WIRE_M_   
-        INA219_WE(const uint8_t addr = 0x40) : _wire{&Wire}, i2cAddress{addr} {}
-        INA219_WE(TwoWire *w, const uint8_t addr = 0x40) : _wire{w}, i2cAddress{addr} {}
+        INA219_WE(const uint8_t addr = 0x40) : _wire{&Wire2}, i2cAddress{addr} {}
+        INA219_WE(I2C *w, const uint8_t addr = 0x40) : _wire{w}, i2cAddress{addr} {}
 #else
         INA219_WE(const uint8_t addr = 0x40) : i2cAddress{addr} {}
 #endif   
@@ -118,7 +113,7 @@ class INA219_WE
         INA219_PGAIN devicePGain;
         INA219_BUS_RANGE deviceBusRange;
 #ifndef USE_TINY_WIRE_M_    
-        TwoWire *_wire;
+        I2C *_wire;
 #endif
         uint8_t i2cAddress;
         uint16_t calVal;

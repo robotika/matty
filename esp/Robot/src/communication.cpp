@@ -21,7 +21,7 @@ void Comm::send(uint8_t message, void* data, uint8_t length) {
   transmit(&tx, length + 2);
 }
 
-void Comm::send(uint8_t status, uint8_t mode, uint16_t voltage, uint16_t current, int16_t speed, float angle, int32_t encoder[4]) {
+void Comm::send(uint8_t status, uint8_t mode, uint16_t voltage, uint16_t current, int16_t speed, float angle, int32_t encoder[4], float roll, float pitch, float yaw) {
   txData.counter = infoCounter++;
   txData.message = 'I';
   txData.status = status;
@@ -34,5 +34,8 @@ void Comm::send(uint8_t status, uint8_t mode, uint16_t voltage, uint16_t current
   txData.encoder[1] = encoder[1] * STEP;
   txData.encoder[2] = encoder[2] * STEP;
   txData.encoder[3] = encoder[3] * STEP;
+  txData.roll  =  round(roll * 100);
+  txData.pitch =  round(pitch * 100);
+  txData.yaw   =  round(yaw * 100);
   transmit(&txData, sizeof(TransmitPacket));
 }
