@@ -7,11 +7,9 @@
 #include "i2c.h"
 #include "quaternionFilters.h"
 
-#define CALIBRATION
-
 class IMU {
   public:
-    void init();
+    void init(bool noTask = 0);
     void update();  // cteni a vypocet imu pro task
     static void imuTask(void* pvParameters);
     void eulerAngles(float &roll, float &pitch, float &yaw);

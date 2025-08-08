@@ -6,10 +6,10 @@ void IMU::imuTask(void *pvParameters) {
 	static_cast<IMU*>(pvParameters)->update();
 }
 
-void IMU::init() {
+void IMU::init(bool noTask) {
 	if (getId() == 0x05) {
     configSensors();
-		xTaskCreate(&IMU::imuTask, "Task IMU", 2048, (void*)this, 1, NULL);
+		if (!noTask) xTaskCreate(&IMU::imuTask, "Task IMU", 2048, (void*)this, 1, NULL);
   }
 }
 
@@ -91,7 +91,7 @@ void IMU::qmi8658_on_demand_cali(void) {
 }
 
 void IMU::autoCalibrate() {
-	#define SAMPLES	50
+	#define SAMPLES	500
   Serial.println("Position your ICM20948 flat and don't move it - calibrating...");
   delay(1000);
 
