@@ -6,7 +6,7 @@
 #include "as5600.h"
 #include "power.h"
 #include "sts.h"
-#include "imu.h"  
+#include "IMU.h"
 #ifdef SERVO_PIN
   #include "servo.h"  
 #endif

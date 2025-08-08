@@ -1,4 +1,4 @@
-#include "I2C.h"
+#include "i2c.h"
 
 bool I2C::lock() {
   return xSemaphoreTake(mutex, portMAX_DELAY) == pdTRUE;
