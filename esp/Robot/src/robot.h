@@ -6,6 +6,13 @@
 #include "as5600.h"
 #include "power.h"
 #include "sts.h"
+#include "imu.h"  
+#ifdef SERVO_PIN
+  #include "servo.h"  
+#endif
+#ifdef LED_PIN
+  #include "ws2812.h"  
+#endif
 
 #define STOP            0
 #define REMOTE_CONTROL  1
@@ -33,6 +40,12 @@ class Robot : public Sts {
     void  setTime(uint16_t p, uint16_t t); // nastavi periodu pro odomerii a odesilani dat, timeout pro automaticke zastaveni, pokud neprijde novy povel G
     void  setLimits(uint16_t maxSpeed, uint16_t maxAngleSpeed); // nastavi maximalni rychlosti
     void  updateSystem();
+    #ifdef SERVO_PIN
+      void  setServo(uint16_t position);
+    #endif
+    #ifdef LED_PIN
+      void  led(uint8_t index, uint32_t rgb);
+    #endif  
 
     float     x, y, a;  // aktualni pozice robota [mm, mm, rad]
     uint8_t   status;
@@ -42,6 +55,7 @@ class Robot : public Sts {
     float     joint;            // uhel natoceni kloubu ve stupnich
     float     actualSpeed;      // rychlost pocitana z odometrie v mm/s
     int32_t   encoder[SERVOS];
+    float     roll, pitch, yaw;
     uint32_t  scanPeriod = SCAN_PERIOD;
   private:
     float speed;  // pozadovana rychlost
@@ -56,6 +70,7 @@ class Robot : public Sts {
     void  updateEncoder(uint16_t p[SERVOS]);
     void  updateOdometry(uint32_t t);
     void  updatePower();
+    void  updateImu();
     void  control();  // vypocet kinematiky a rizeni pohonu
 };
 

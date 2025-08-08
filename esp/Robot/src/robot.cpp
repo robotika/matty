@@ -4,6 +4,13 @@ uint8_t idServo[SERVOS] = {1, 2, 3, 4};
 
 AS5600 as5600(ZERO_JOINT);  // zero joint position
 Power power;
+IMU   imu;
+#ifdef SERVO_PIN
+  Servo servo;
+#endif
+#ifdef LED_PIN
+  Neopixel neopixel;
+#endif  
 
 Robot::Robot(Stream* stSerial) : Sts(stSerial) {
 }
@@ -13,6 +20,7 @@ void Robot::init() {
   power.init();
   pinMode(BUMPER_FRONT_PIN, INPUT);
   pinMode(BUMPER_BACK_PIN,  INPUT);
+  imu.init();
   stop();
   process();
   reset();
@@ -164,6 +172,7 @@ bool Robot::process() {
     updateEncoder(p);
     updateOdometry(t - timeScan);
     updateSystem();
+    updateImu();
     timeScan = t;
     return 1;
   }
@@ -181,6 +190,10 @@ void Robot::updatePower() {
   voltage = power.getBusVoltage_V() * 1000.0f;
 }
 
+void Robot::updateImu() {
+  imu.eulerAngles(roll, pitch, yaw);
+}
+
 void Robot::setTime(uint16_t period, uint16_t t) { // nastavi periodu pro cteni odomerie a odesilani dat, timeout pro automaticke zastaveni, pokud neprijde novy povel G
   scanPeriod = period;
   robotTimeout = t;
@@ -190,3 +203,20 @@ void Robot::setLimits(uint16_t maxSpeed, uint16_t maxAngleSpeed) { // nastavi ma
   if (maxSpeed <= SPEED_MAX) v_max = maxSpeed;
   if (maxAngleSpeed <= STEER_MAX) a_max = maxAngleSpeed;
 }
+
+#ifdef SERVO_PIN
+void Robot::setServo(uint16_t position) {
+  if (position > 0) {
+    servo.attach(SERVO_PIN);
+    servo.write(position);
+  } else {
+    servo.detach();
+  }
+}
+#endif
+
+#ifdef LED_PIN
+void Robot::led(uint8_t index, uint32_t rgb) {
+  neopixel.led(index, rgb);
+}
+#endif
