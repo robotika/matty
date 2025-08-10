@@ -71,9 +71,9 @@
     #define D              135  // prumer kol
 
     // IMU kalibrace
-    #define ACC_BIAS    {0, 0, 0}
-    #define GYRO_BIAS   {0, 0, 0}
-    #define MAG_BIAS    {0, 0, 0}
+    #define ACC_BIAS    {26.22, -57.87, -13.25}
+    #define GYRO_BIAS   {-2.57, 2.78, -1.17}
+    #define MAG_BIAS    {-21.3, 12.7, -21.7}
     #define MAG_CORECT  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
   #endif
 
