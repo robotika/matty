@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty" SUBSYSTEMS=="usb" ATTRS{idProduct}=="ea60" ATTRS{idVendor}=="10c4" SYMLINK+="esp32"
+
