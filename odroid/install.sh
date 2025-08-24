@@ -11,6 +11,7 @@ install_dummy_display() {
 
 install_pip() {
   sudo apt install python3-pip
+  sudo pip install uv
 }
 
 prepare_git_structure(){
@@ -22,8 +23,19 @@ prepare_git_structure(){
   git init --bare osgar-apps.git
   git init --bare matty.git
   mkdir ~/logs
+
+  cd ~/git/
+  git clone /home/robot/git/bare/osgar.git/
+  git clone /home/robot/git/bare/osgar-apps.git/
+  git clone /home/robot/git/bare/matty.git/
 }
 
+init_bashrc() {
+  # TODO copy to ~/.bashrc
+  export OSGAR_LOGS=/home/robot/logs
+  export OSGAR_LOGS_PREFIX=`uname -a | awk '{print substr($2,1,4)}'`
+  export PYTHONPATH=/home/robot/git/osgar:/home/robot/git/osgar-apps
+}
 
 # high level calls
 prepare_git_structure
