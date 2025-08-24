@@ -18,9 +18,9 @@ prepare_git_structure(){
   cd git/
   mkdir bare
   cd bare/
-  git init –bare osgar.git
-  git init –bare osgar-apps.git
-  git init –bare matty.git
+  git init --bare osgar.git
+  git init --bare osgar-apps.git
+  git init --bare matty.git
   mkdir ~/logs
 }
 
