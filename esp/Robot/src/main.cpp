@@ -62,7 +62,6 @@ void receiveCommand() {
         case 'L': robot.setLimits(comm.rxData.speed, comm.rxData.steer);
                   break;
         case 'T': robot.setTime(comm.rxData.period, comm.rxData.timeout);
-                  robot.led(0, COLOR::GREEN);
                   break;
         case 'P': gps.config(comm.rxData.mode);
                   break;
@@ -121,15 +120,6 @@ void loop() {
 
   if (robot.process()) { // periodicke odesilani dat
     comm.send(robot.status, robot.mode, robot.voltage, robot.current, robot.actualSpeed, robot.joint, robot.encoder, robot.roll, robot.pitch, robot.yaw);
-    static uint8_t lastStatus;
-    if ((lastStatus ^ robot.status) & ROBOT_STATUS::EMERGENCY_STOP) {
-      if (robot.status & ROBOT_STATUS::EMERGENCY_STOP) {
-        robot.led(1, COLOR::RED);
-      } else {
-        robot.led(1, COLOR::GREEN);
-      }
-    }
-    lastStatus = robot.status;
   }
 
   if (gps.process()) {
@@ -138,6 +128,5 @@ void loop() {
     if (length != 0) {
       comm.send('P', buffer, length);
     }
-  }
-  
+  }  
 }

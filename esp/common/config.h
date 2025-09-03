@@ -78,29 +78,29 @@
   #endif
 
   #if (MATTY == 04) // Matty M04 - ruzovy
-    #define ZERO_JOINT   0.00f  // nulova poloha kloubu Matty M04 - Martin Dlouhy
+    #define ZERO_JOINT  172.18f  // nulova poloha kloubu Matty M04 - Martin Dlouhy
     #define L              320  // rozvor
     #define A              315  // rozchod
     #define D              135  // prumer kol
 
     // IMU kalibrace
-    #define ACC_BIAS    {0, 0, 0}
-    #define GYRO_BIAS   {0, 0, 0}
-    #define MAG_BIAS    {0, 0, 0}
-    #define MAG_CORECT  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
+    #define ACC_BIAS    {63.89, -12.78,  46.65}
+    #define GYRO_BIAS   {0.56,   1.10,  -0.76}
+    #define MAG_BIAS    {-35.06, 0.41, -57.53}
+    #define MAG_CORECT  {{1.021, -0.005, -0.023}, {-0.005, 1.040, 0.031}, {-0.023, 0.031, 0.943}}
   #endif
 
   #if (MATTY == 05) // Matty M05 - oranzovy
-    #define ZERO_JOINT   0.00f  // nulova poloha kloubu Matty M05 - Martin Dlouhy
+    #define ZERO_JOINT  157.68f  // nulova poloha kloubu Matty M05 - Martin Dlouhy
     #define L              320  // rozvor
     #define A              315  // rozchod
     #define D              135  // prumer kol
 
     // IMU kalibrace
-    #define ACC_BIAS    {0, 0, 0}
-    #define GYRO_BIAS   {0, 0, 0}
-    #define MAG_BIAS    {0, 0, 0}
-    #define MAG_CORECT  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
+    #define ACC_BIAS    {12.37, -39.15, -15.27}
+    #define GYRO_BIAS   {-3.03,   1.62,  -0.25}
+    #define MAG_BIAS    {-20.56, 1.94, -45.34}
+    #define MAG_CORECT  {{1.052, 0.003, -0.017}, {0.003, 1.018, 0.013}, {-0.017, 0.013, 0.933}}
   #endif
 #endif
 

@@ -24,6 +24,8 @@ void Robot::init() {
   stop();
   process();
   reset();
+  neopixel.init();
+  led(0, GREEN);
 }
 
 void Robot::reset() {

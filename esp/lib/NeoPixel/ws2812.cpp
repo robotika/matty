@@ -1,7 +1,7 @@
 #include "ws2812.h"
 
 Neopixel::Neopixel() {
-  init();
+//  init(); // nekdy funguje, ale ..., nutno inicializovat az pozdeji
 }
 
 esp_err_t Neopixel::init(void) {

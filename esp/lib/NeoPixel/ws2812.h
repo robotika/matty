@@ -45,11 +45,20 @@ on an ESP32 with an 80MHz clock: 0.28 * 80 / 2 = 11.2 => 11 (rounded when needed
 #define BITS_PER_LED_CMD	24
 #define LED_BUFFER_ITEMS	(NUM_LEDS * BITS_PER_LED_CMD)
 
+/*
 // These values are determined by measuring pulse timing with logic analyzer and adjusting to match datasheet. 
 #define T0H	20  // 0 bit high time WS2811
 #define T0L	80  // low time for either bit
 #define T1H	48  // 1 bit high time
 #define T1L	52
+#define TE  2000
+*/
+
+// These values are determined by measuring pulse timing with logic analyzer and adjusting to match datasheet. 
+#define T0H	14  // 0 bit high time WS2812
+#define T0L	32  // low time for either bit
+#define T1H	28  // 1 bit high time
+#define T1L	24
 #define TE  2000
 
 enum COLOR { // BRG
@@ -64,6 +73,9 @@ class Neopixel {
     void  led(uint8_t index, uint32_t rgb);
     void  clear();
 
+    // Setup the hardware peripheral. Only call this once.
+    esp_err_t init(void);
+
   private:
     // This structure is used for indicating what the colors of each LED should be set to.
     // There is a 32bit value for each LED. Only the lower 3 bytes are used and they hold the
@@ -75,9 +87,6 @@ class Neopixel {
 
     // This is the buffer which the hw peripheral will access while pulsing the output pin
     rmt_item32_t led_data_buffer[LED_BUFFER_ITEMS+1];
-
-    // Setup the hardware peripheral. Only call this once.
-    esp_err_t init(void);
 
     // Update the LEDs to the new state. Call as needed.
     // This function will block the current task until the RMT peripheral is finished sending 
