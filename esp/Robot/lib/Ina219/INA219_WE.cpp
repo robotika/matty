@@ -220,18 +220,22 @@ void INA219_WE::powerUp(){
 
 #ifndef USE_TINY_WIRE_M_
 uint8_t INA219_WE::writeRegister(uint8_t reg, uint16_t val){
+    _wire->lock();
     _wire->beginTransmission(i2cAddress);
     uint8_t lVal = val & 255;
     uint8_t hVal = val >> 8;
     _wire->write(reg);
     _wire->write(hVal);
     _wire->write(lVal);
-    return _wire->endTransmission();
+    uint8_t ret = _wire->endTransmission(); 
+    _wire->unlock();
+    return ret;
 }
   
 uint16_t INA219_WE::readRegister(uint8_t reg){
     uint8_t MSByte = 0, LSByte = 0;
     uint16_t regValue = 0;
+    _wire->lock();
     _wire->beginTransmission(i2cAddress);
     _wire->write(reg);
     _wire->endTransmission(false);
@@ -240,6 +244,7 @@ uint16_t INA219_WE::readRegister(uint8_t reg){
         MSByte = _wire->read();
         LSByte = _wire->read();
     }
+    _wire->unlock();
     regValue = (MSByte<<8) + LSByte;
     return regValue;
 }

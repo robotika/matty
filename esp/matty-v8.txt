@@ -7,7 +7,7 @@ SYNC  0x55
 ESC   0x56 (volitelné escapování znaků SYNC a ESC)
 CRC = 256 - (LENGTH + DATA0 + DATA1 + ... DATAn)
 
-Komunikační protokol Matty v2:
+Komunikační protokol Matty v8:
 
 PC -> ESP
 
@@ -21,38 +21,51 @@ counter command   data
           T       uint16 period (ms)    uint16 timeout (ms)       ... nastavení periody posílání dat z robota a timeout pro příjem povelů
           P       uint8 mode                                      ... nastavení režimu gps (0 - vypnuto, 1 - surová data, 2 - ...)
           V                                                       ... version
-  
+          C       uint16_t                                        ... analogové servo na pinu GPIO4 (šířka pulzu 1000 ... 2000 us)
+          X       uint16_t index, uint16_t position               ... digitální ST servo na sběrnici (adresa 4 ... ), pozice (0..4095)
+          D       uint8_t index, uint8_t r, uint8_t g, uint8_t b  ... neopixel led (WS2811) na pinu GPIO4 
+            
 ESP -> PC
 
 potvrzení přijatého příkazu DATA:  
-
-counter potvrzení
- uint8    A/N
+  counter     uint8 
+  ack/nack    A/N
   
 stavová zpráva (odesíláná pravidelně dle nastavené periody) DATA:
+  counter             uint8 
+  message               I
+  status              uint8
+  mode                uint8
+  voltage(mV)         uint16
+  current(mA)         uint16
+  speed(mm/s)         int16
+  joint angle(0,01°)  int16
+  encoder0(mm)        uint16
+  encoder1(mm)        uint16
+  encoder2(mm)        uint16
+  encoder3(mm)        uint16
+  roll(0,01°)         int16_t
+  pitch(0,01°)        int16_t
+  yaw(0,01°)          int16_t
 
-counter message  status  mode  voltage(mV)  current(mA)  speed(mm/s) angle(0,01°) encoder0(mm)  encoder1(mm)  encoder2(mm)  encoder3(mm)
- uint8    I       uint8  uint8  uint16        uint16       int16         int16      uint16        uint16        uint16        uint16
-
-status (příznakové bity): 
-  EMERGENCY_STOP  = 0x01
-  VOLTAGE_LOW     = 0x02
-  BUMPER_FRONT    = 0x04
-  BUMPER_BACK     = 0x08
-  ERROR_ENCODER   = 0x10
-  ERROR_POWER     = 0x20
-  RUNNING         = 0x80
+  status (příznakové bity): 
+    EMERGENCY_STOP  = 0x01
+    VOLTAGE_LOW     = 0x02
+    BUMPER_FRONT    = 0x04
+    BUMPER_BACK     = 0x08
+    ERROR_ENCODER   = 0x10
+    ERROR_POWER     = 0x20
+    RUNNING         = 0x80
 
 gps zpráva (odesílána ihned po přijetí z gps):
-
-counter message  data 
- uint8    P      nmea ($  ... CRLF)
-
+  counter   uint8 
+  message   P
+  data      nmea ($  ... CRLF)
 
 version zpráva
-
-counter message  data
- uint8    V      uint8 (serial number), uint8 (version)
+  counter   uint8
+  message   uint8
+  data      uint8 (serial number), uint8 (version)
 
 =================================================================  
 bitova negace pro escape

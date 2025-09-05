@@ -4,7 +4,7 @@ Power::Power() : INA219_WE(INA219_ADDRESS) {
 }
 
 bool Power::init() {
-  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire2.begin(I2C_SDA, I2C_SCL, 400000);
   if (!INA219_WE::init()) {
     return 0;
   }
