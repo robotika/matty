@@ -2,6 +2,7 @@ install_dummy_display() {
   # and audio
   apt install xserver-xorg-video-dummy
   apt install portaudio19-dev
+  apt install ffmpeg
 
   cp 10-headless.conf /etc/X11/xorg.conf.d/10-headless.conf
   cp vnc-display.sh /usr/local/bin/vnc-display.sh
