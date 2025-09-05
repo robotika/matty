@@ -22,12 +22,14 @@ prepare_git_structure(){
   git init --bare osgar.git
   git init --bare osgar-apps.git
   git init --bare matty.git
+  git init --bare dtc-video-analysis.git
   mkdir ~/logs
 
   cd ~/git/
   git clone /home/robot/git/bare/osgar.git/
   git clone /home/robot/git/bare/osgar-apps.git/
   git clone /home/robot/git/bare/matty.git/
+  git clone /home/robot/git/bare/dtc-video-analysis.git/
 }
 
 init_bashrc() {
