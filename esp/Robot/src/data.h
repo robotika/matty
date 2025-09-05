@@ -30,6 +30,11 @@ struct __attribute__((packed)) ReceivePacket {
       uint16_t period;    // ms
       uint16_t timeout;   // ms
     };
+    struct {
+      int index:8;
+      int rgb:24;
+    };
+    uint32_t data;
   };
 };
 
@@ -43,6 +48,7 @@ struct __attribute__((packed)) TransmitPacket {
   int16_t  speed;         // mm/s
   int16_t  angle;         // 0,01°
   uint16_t encoder[4];    // mm
+  int16_t  roll, pitch, yaw;
 };
 
 struct __attribute__((packed)) TransmitData {
