@@ -22,6 +22,7 @@ dependencies = [
     "protobuf==3.20.0",
     "PyAudio==0.2.14",
     "pycparser==2.22",
+    "pygame>=2.6.1",
     "pyrealsense2==2.53.1.4623",
     "pyserial==3.5",
     "pyusb==1.2.1",
