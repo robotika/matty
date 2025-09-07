@@ -10,6 +10,17 @@ install_dummy_display() {
   systemctl enable vnc-display.service
 }
 
+install_audio() {
+  sudo apt install pipewire pipewire-audio-client-libraries libspa-0.2-bluetooth
+  sudo apt remove pulseaudio-module-bluetooth
+  systemctl --user --now enable pipewire pipewire-pulse
+  sudo apt install wireplumber
+  systemctl --user --now disable pulseaudio.service pulseaudio.socket
+  systemctl --user mask pulseaudio
+  systemctl --user --now enable pipewire pipewire-pulse.socket wireplumber.service
+  pactl list sinks short
+}
+
 install_pip() {
   sudo apt install python3-pip
   sudo pip install uv
