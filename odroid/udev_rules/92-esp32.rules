@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty" SUBSYSTEMS=="usb" ATTRS{idProduct}=="ea60" ATTRS{idVendor}=="10c4" ENV{ID_PATH}=="pci-0000:00:14.0-usb-0:7:1.0" SYMLINK+="esp32"
+

@@ -1,0 +1,10 @@
+[Unit]
+Description=Configure VNC dummy screen
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/vnc-display.sh
+
+[Install]
+WantedBy=multi-user.target
+

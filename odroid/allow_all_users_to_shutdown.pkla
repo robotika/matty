@@ -1,0 +1,7 @@
+# /etc/polkit-1/localauthority/50-local.d/allow_all_users_to_shutdown.pkla
+[Allow all users to shutdown]
+Identity=unix-user:*
+Action=org.freedesktop.login1.power-off;org.freedesktop.login1.power-off-multiple-sessions;org.freedesktop.login1.reboot;org.freedesktop.login1.reboot-multiple-sessions
+ResultActive=yes
+ResultAny=yes
+
