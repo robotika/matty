@@ -428,17 +428,17 @@ wheels = [
 
 [[package]]
 name = "depthai"
-version = "3.1.0"
+version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/05/e10a69b042de974f61177afc92244c7b3287c0a4f02c4d73561da19845a9/depthai-3.1.0-cp310.cp311.cp312.cp313.cp37.cp38.cp39-cp310.cp311.cp312.cp313.cp37m.cp38.cp39-win_amd64.whl", hash = "sha256:c8a6c44e574d25828d26864412f807480a6d53d4927ae88c04c00dfbf698d6b1", size = 86446896, upload-time = "2025-10-15T20:15:57.623Z" },
-    { url = "https://files.pythonhosted.org/packages/ae/e3/fb07d0e1353fa970ca22c334b2a6f7d2f276df5ba8e952289ca6709f2e49/depthai-3.1.0-cp311.cp313.cp38.cp37.cp312.cp39.cp310-cp311.cp313.cp38.cp37m.cp312.cp39.cp310-manylinux_2_28_x86_64.whl", hash = "sha256:332485a12d84fb711397e0ed653e3a5e1ef245ffe483ee421e9514785dbfd87c", size = 91912530, upload-time = "2025-10-15T20:16:06.689Z" },
-    { url = "https://files.pythonhosted.org/packages/15/3e/38c64a614add6bc245d3846f2591aa3a10c33aeda70572db922dcdd6822e/depthai-3.1.0-cp313.cp38.cp310.cp39.cp311.cp312-cp313.cp38.cp310.cp39.cp311.cp312-macosx_14_0_arm64.whl", hash = "sha256:1db3c7131a286ad60c7eaedc8a812edf462b342ab4eec5dfbb01103bb99a7ff9", size = 59829254, upload-time = "2025-10-15T20:16:12.207Z" },
-    { url = "https://files.pythonhosted.org/packages/36/06/0a3e2fc2ddd1649577b8fe6b922c9dc0cbd397e560e6512cf0dcdd7b6d06/depthai-3.1.0-cp37.cp313.cp312.cp311.cp310.cp39.cp38-cp37m.cp313.cp312.cp311.cp310.cp39.cp38-manylinux_2_28_aarch64.whl", hash = "sha256:b2aca69e2e065b866942a7ba4eff046a7035cf63ba5dfdb7527f84ac5cfa2450", size = 85891120, upload-time = "2025-10-15T20:16:17.139Z" },
-    { url = "https://files.pythonhosted.org/packages/f3/70/39ec638e26fd94d8853ce0a702688da2c1960171f3dadd42416150dd3692/depthai-3.1.0-cp39.cp38.cp310.cp311.cp313.cp312-cp39.cp38.cp310.cp311.cp313.cp312-macosx_13_0_universal2.macosx_13_0_x86_64.whl", hash = "sha256:36984f267cbe882efa82562da5eb51a87acc834aef4cbe2cd229ebe30ea41877", size = 66329685, upload-time = "2025-10-15T20:16:22.317Z" },
+    { url = "https://files.pythonhosted.org/packages/b5/4d/a26124b2a49299672af4f6598ade0a5ffe2b149ec69bc0e1c6d66e4471d2/depthai-3.3.0-cp39.cp310.cp311.cp312.cp313.cp314-cp39.cp310.cp311.cp312.cp313.cp314-macosx_11_0_arm64.whl", hash = "sha256:eebafc27e34582d4d3c906b6bd53ea2d996e62e4ba809685f60f8ce4fd3a8005", size = 60256529, upload-time = "2026-01-15T21:28:58.159Z" },
+    { url = "https://files.pythonhosted.org/packages/85/bb/ab5d670b06478f35fd45a4dc1b6bb5b37ec046a1245be26979425abc2f15/depthai-3.3.0-cp39.cp310.cp311.cp312.cp313.cp314-cp39.cp310.cp311.cp312.cp313.cp314-macosx_11_0_x86_64.whl", hash = "sha256:407c01e1048ed88166f6ae64f4e1a50921a27818151c8bbf36e3c0e481f6dfa0", size = 63705740, upload-time = "2026-01-15T21:29:02.621Z" },
+    { url = "https://files.pythonhosted.org/packages/6e/ba/2c0a62e671cefd6aa6dd96725df2673c8635b8bbce79c0c7d55473b313af/depthai-3.3.0-cp39.cp310.cp311.cp312.cp313.cp314-cp39.cp310.cp311.cp312.cp313.cp314-manylinux_2_28_aarch64.whl", hash = "sha256:d96e67bb5fcc69789eb9d231a3cf91df1bc1001e981f8db4ea27e8fda694e1ce", size = 74340644, upload-time = "2026-01-15T21:29:06.667Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/8f/5d433e000f69682678abc461f00a856fcaf2df6e6180767eea5235c4f4da/depthai-3.3.0-cp39.cp310.cp311.cp312.cp313.cp314-cp39.cp310.cp311.cp312.cp313.cp314-manylinux_2_28_x86_64.whl", hash = "sha256:5dab21c0a5d503e9bd07f3c03b43e9c2f04cdef3cb8daee697b35617ecc377d3", size = 79156483, upload-time = "2026-01-15T21:29:11.23Z" },
+    { url = "https://files.pythonhosted.org/packages/87/74/fdc0446a66f6ccc648bf695b1c85e080d386ed5f11e2bddf20573a46d39a/depthai-3.3.0-cp39.cp310.cp311.cp312.cp313.cp314-cp39.cp310.cp311.cp312.cp313.cp314-win_amd64.whl", hash = "sha256:1827dae7b7010a1020fef2d6ccb8af3a21046aa97c9e0e9be4b1424dafa87299", size = 83708147, upload-time = "2026-01-15T21:29:15.408Z" },
 ]
 
 [[package]]
@@ -1122,7 +1122,7 @@ requires-dist = [
     { name = "cffi", specifier = "==1.17.1" },
     { name = "charset-normalizer", specifier = "==3.4.1" },
     { name = "cryptography", specifier = "==45.0.6" },
-    { name = "depthai", specifier = "==3.1.0" },
+    { name = "depthai", specifier = "==3.3.0" },
     { name = "idna", specifier = "==3.10" },
     { name = "librosa", specifier = ">=0.10.0" },
     { name = "msgpack", specifier = "==1.0.5" },
