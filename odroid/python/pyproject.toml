@@ -5,12 +5,13 @@ description = "Python environment for Matty robotics platform"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "av>=17.0.1",
     "bitstring>=4.3.1",
     "certifi==2025.1.31",
     "cffi==1.17.1",
     "charset-normalizer==3.4.1",
     "cryptography==45.0.6",
-    "depthai==3.1.0",
+    "depthai==3.6.1",
     "idna==3.10",
     "librosa>=0.10.0",
     "msgpack==1.0.5",
